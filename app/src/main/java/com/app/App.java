@@ -13,6 +13,13 @@ public class App extends Application {
 
     private static Scene scene;
 
+
+/**
+ * Starts the JavaFX application.
+ *
+ * @param  stage  the primary stage for this application
+ * @throws IOException  if the FXML file cannot be loaded
+ */
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("primary.fxml"));
@@ -25,7 +32,7 @@ public class App extends Application {
     }
 
  
-
+ 
     public static void main(String[] args) {
         launch();
     }
