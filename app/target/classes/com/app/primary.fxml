@@ -6,17 +6,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.PrimaryController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(100, 78, 129);" stylesheets="@appStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.PrimaryController">
    <children>
-      <Label fx:id="title" alignment="CENTER" layoutX="178.0" layoutY="31.0" prefHeight="40.0" prefWidth="209.0" text="Library System">
+      <Label fx:id="title" alignment="CENTER" layoutX="15.0" layoutY="14.0" prefHeight="40.0" prefWidth="209.0" text="Library System" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="primaryText" alignment="CENTER" layoutX="14.0" layoutY="81.0" prefHeight="40.0" prefWidth="163.0" text="Username" textAlignment="JUSTIFY" />
-      <Button fx:id="primaryButton" layoutX="361.0" layoutY="354.0" mnemonicParsing="false" onAction="#onPrimaryButtonClick" text="Button" />
-      <TextField fx:id="usernameField" layoutX="201.0" layoutY="88.0" />
-      <TextField fx:id="passwordField" layoutX="201.0" layoutY="131.0" />
-      <Label fx:id="primaryText1" alignment="CENTER" layoutX="15.0" layoutY="124.0" prefHeight="40.0" prefWidth="163.0" text="Password" textAlignment="JUSTIFY" />
-      <Button layoutX="206.0" layoutY="186.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="139.0" text="Login" />
+      <Label fx:id="primaryText" alignment="CENTER" layoutY="81.0" prefHeight="40.0" prefWidth="91.0" text="Username" textAlignment="JUSTIFY" textFill="WHITE" />
+      <TextField fx:id="usernameField" layoutX="132.0" layoutY="89.0" prefHeight="25.0" prefWidth="180.0" />
+      <TextField fx:id="passwordField" layoutX="132.0" layoutY="132.0" prefHeight="25.0" prefWidth="180.0" />
+      <Label fx:id="primaryText1" alignment="CENTER" layoutY="124.0" prefHeight="40.0" prefWidth="91.0" text="Password" textAlignment="JUSTIFY" textFill="WHITE" />
+      <Button layoutX="20.0" layoutY="200.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="280.0" stylesheets="@appStyle.css" text="Login" />
+      <AnchorPane layoutX="320.0" prefHeight="400.0" prefWidth="280.0" style="-fx-background-color: rgba(68, 46, 97, 1);" stylesheets="@appStyle.css" />
    </children>
 </AnchorPane>

@@ -49,13 +49,13 @@ public class BookCollection {
      * @param genre The genre of the book.
      * @param id The ID of the book.
      */
-    public void addBook(String title, String genre, int id) {
+    public void addBook(String title, String genre,String author) {
         // Create a new book object
-        Book newBook = new Book(id);
+        Book newBook = new Book(books.size() + 1);
         // Set the title and genre of the book
         newBook.setGenre(genre);
         newBook.setTitle(title);
-        // Add the new book to the collection
+        newBook.setAuthor(author);
         books.add(newBook);
     }
 

@@ -43,6 +43,7 @@ public class PrimaryController {
         userList.add(new User("1", "1", 1));
         userList.add(new User("password2", "username2", 2));
         userList.add(new User("password3", "username3", 3));
+        userList.add(new User("", "", 4));
 
     }
 
@@ -86,7 +87,7 @@ public class PrimaryController {
         // Get entered username and password
         String username = usernameField.getText();
         String password = passwordField.getText();
-
+    
         // Iterate through the list of User objects
         for (User user : userList) {
             // Check if the entered credentials match a User object
@@ -97,7 +98,7 @@ public class PrimaryController {
                 showAlert("Login Successful", "Welcome, " + username + "!");
                 try {
                     // Switch to scene 2 upon successful login
-                    switchToScene2(event);
+                    switchToScene2(event, user); // Pass the logged-in user to the method
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -139,10 +140,20 @@ public class PrimaryController {
   * @param  event	The ActionEvent that triggers the switch
   * @return        	void (no return value)
   */
- public void switchToScene2(ActionEvent event) throws IOException {
-    Parent root = FXMLLoader.load(getClass().getResource("secondary.fxml"));
+ public void switchToScene2(ActionEvent event, User user) throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+    root = loader.load();
+    
+    SecondaryController controller = loader.getController();
+    
+    controller.currentUser(user);
+
+
     stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
     scene = new Scene(root);
+    String css = this.getClass().getResource("appStyle.css").toExternalForm();
+    scene.getStylesheets().add(css);
     stage.setScene(scene);
     stage.show();
    }

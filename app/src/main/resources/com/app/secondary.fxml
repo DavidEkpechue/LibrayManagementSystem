@@ -1,24 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="com.app.SecondaryController">
-  <tabs>
-    <Tab text="Untitled Tab 1">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="914.0" style="-fx-background-color: rgba(68, 46, 97, 1);" stylesheets="@appStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.SecondaryController">
+   <children>
+      <AnchorPane prefHeight="785.0" prefWidth="219.0" style="-fx-background-color: rgb(100, 78, 129);">
+         <children>
+            <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="103.0" prefHeight="580.0" prefWidth="199.0" spacing="20.0">
                <children>
-                  <Button fx:id="addBookButton" layoutX="63.0" layoutY="173.0" mnemonicParsing="false" text="Button" />
-               </children></AnchorPane>
-      </content>
-    </Tab>
-    <Tab text="Untitled Tab 2">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-    </Tab>
-  </tabs>
-</TabPane>
+                  <Button mnemonicParsing="false" onAction="#handleAddBookButtonAction" prefHeight="100.0" prefWidth="100.0" text="Add Book" />
+                  <Button layoutX="118.0" layoutY="10.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" text="Button" />
+                  <Button layoutX="118.0" layoutY="115.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" text="Button" />
+                  <Button layoutX="118.0" layoutY="220.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" text="Button" />
+                  <Button fx:id="logoutButton" layoutX="118.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleLogoutButtonAction" prefHeight="100.0" prefWidth="100.0" text="Logout" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <GridPane alignment="CENTER" hgap="40.0" layoutX="260.0" layoutY="40.0" prefHeight="700.0" prefWidth="600.0" vgap="40.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Pane layoutX="20.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" styleClass="panel" GridPane.columnSpan="4">
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+               <children>
+                  <Label fx:id="titleLabel" alignment="CENTER" layoutX="114.0" layoutY="-1.0" text="Search For Books" />
+               </children>
+            </Pane>
+            <Pane layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="218.0" styleClass="panel" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+               <children>
+                  <TextField fx:id="searchTextField" alignment="CENTER" layoutX="58.0" layoutY="8.0" onAction="#handleSearchButtonAction" prefHeight="38.0" prefWidth="154.0" promptText="Search for a book" style="-fx-background-color: rgba(68, 46, 97, 1);" />
+               </children>
+             </Pane>
+            <Pane layoutX="20.0" layoutY="227.0" prefHeight="200.0" prefWidth="218.0" styleClass="panel" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+         <children>
+            <TextFlow layoutX="6.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+                  <children>
+                     <Label fx:id="currentBookLabel" wrapText="true" />
+                  </children>
+            </TextFlow>
+         </children>
+      </Pane>
+            <ListView fx:id="searchedListView" editable="true" prefHeight="445.0" prefWidth="310.0" styleClass="panel" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

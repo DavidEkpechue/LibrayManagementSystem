@@ -32,15 +32,15 @@ public class Book {
     public String toString() {
         return
                 "Title: " + title +
-                "\nGenre: " + genre +
-                "\nBook ID: " + book_id +
-                "\nPrice: " + price +
-                "\nDescription: " + description +
-                "\nLanguage: " + language +
-                "\nAuthor: " + author +
-                "\nPublication Date: " + publicationDate +
-                "\nISBN: " + isbn +
-                "\nBorrowed: " + isBorrowed;
+                "\n\nGenre: " + genre +
+                "\n\nBook ID: " + book_id +
+                "\n\nPrice: " + price +
+                "\n\nDescription: " + description +
+                "\n\nLanguage: " + language +
+                "\n\nAuthor: " + author +
+                "\n\nPublication Date: " + publicationDate +
+                "\n\nISBN: " + isbn +
+                "\n\nBorrowed: " + isBorrowed;
 
     }
 
@@ -215,6 +215,15 @@ public class Book {
      */
     public String getAuthor() {
         return  author;
+    }
+
+    /**
+     * Sets the author of the book.
+     *
+     * @param  author  the author to be set
+     */
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
 
