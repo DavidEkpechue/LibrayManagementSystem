@@ -1,5 +1,6 @@
 package com.app;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Book {
@@ -13,7 +14,7 @@ public class Book {
     private String isbn;
 
     private String author;
-    private Date publicationDate;
+    private LocalDate publicationDate;
 
     public Book(int id) {
         this.book_id = id;
@@ -195,7 +196,7 @@ public class Book {
      *
      * @return the publication date of the book
      */
-    public Date getPublicationDate() {
+    public LocalDate getPublicationDate() {
         return publicationDate;
     }
 
@@ -204,7 +205,7 @@ public class Book {
      *
      * @param  publicationDate  the publication date to be set
      */
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
     }
 

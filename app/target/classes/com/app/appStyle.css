@@ -18,6 +18,12 @@
     -fx-background-radius: 10;
     -fx-padding: 5;}
 
+    .label1 {
+        -fx-text-fill: rgb(255, 255, 255);
+        -fx-font-size: 10px;
+        -fx-background-radius: 10;
+        -fx-padding: 5;
+    }
 
 .label {
     -fx-text-fill: rgb(255, 255, 255);

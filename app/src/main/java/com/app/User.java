@@ -42,6 +42,15 @@ public class User {
                 "\nbooksBorrowed=" + booksBorrowed;
     }
 
+    public void printBorrowedBooks(){
+        System.out.println("--Books Borrowed--\n\n ");
+        for(Book book : booksBorrowed){
+            System.out.println(book.getTitle());
+        }
+        System.out.println("\n\n------------------------\n\n");
+    }
+
+
     /**
      * Returns the password of the User object.
      *
@@ -124,6 +133,13 @@ public class User {
         this.booksBorrowed = booksBorrowed;
     }
 
+    public void borrowBook(Book book) {
+        booksBorrowed.add(book);
+    }
+
+    public void returnBook(Book book) {
+        booksBorrowed.remove(book);
+    }
 
 
 

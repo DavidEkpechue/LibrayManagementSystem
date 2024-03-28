@@ -2,6 +2,8 @@ package com.app;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.time.LocalDate;
+
 
 public class BookCollection {
 
@@ -49,14 +51,19 @@ public class BookCollection {
      * @param genre The genre of the book.
      * @param id The ID of the book.
      */
-    public void addBook(String title, String genre,String author) {
+    public void addBook(String title, String genre,String author, double price, LocalDate publicationDate, String description, String language) {
         // Create a new book object
         Book newBook = new Book(books.size() + 1);
         // Set the title and genre of the book
         newBook.setGenre(genre);
         newBook.setTitle(title);
         newBook.setAuthor(author);
+        newBook.setPrice(price);
+        newBook.setPublicationDate(publicationDate);
+        newBook.setDescription(description);
+        newBook.setLanguage(language);
         books.add(newBook);
+
     }
 
     /**
@@ -95,7 +102,13 @@ public class BookCollection {
         return null;
     }
     
-
+    public String toString() {
+        String string = "";
+        for (Book book : books) {
+            string += book.getTitle() + "\n";
+        }
+        return string;
+    }
     /**
      * Removes a book from the collection by its ID.
      *

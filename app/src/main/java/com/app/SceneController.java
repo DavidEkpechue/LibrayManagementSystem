@@ -9,8 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import java.time.LocalDate;
+
+
 
 public class SceneController {
     private BookCollection bookCollection;
@@ -25,6 +30,14 @@ private TextField titleField;
 private TextField genreField;
 @FXML
 private TextField authorField;
+@FXML
+private TextField priceField;
+@FXML
+private TextArea descriptionArea;
+@FXML
+private TextField languageField;
+@FXML
+private DatePicker dateField;
 
 
     /**
@@ -56,9 +69,14 @@ private void addBook(ActionEvent event) {
     String title = titleField.getText();
     String genre = genreField.getText();
     String author = authorField.getText();
+    double price = Double.parseDouble(priceField.getText());
+    String description = descriptionArea.getText();
+    String language = languageField.getText();
+    LocalDate publicationDate = dateField.getValue();
+
 
     // Add the new book to the collection
-    bookCollection.addBook(title, genre, author);
+    bookCollection.addBook(title, genre, author, price, publicationDate, description, language);
 
     // Clear fields after adding book
     clearFields();
