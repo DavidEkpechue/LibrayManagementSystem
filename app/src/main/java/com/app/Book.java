@@ -34,13 +34,9 @@ public class Book {
         return
                 "Title: " + title +
                 "\n\nGenre: " + genre +
-                "\n\nBook ID: " + book_id +
                 "\n\nPrice: " + price +
-                "\n\nDescription: " + description +
-                "\n\nLanguage: " + language +
                 "\n\nAuthor: " + author +
                 "\n\nPublication Date: " + publicationDate +
-                "\n\nISBN: " + isbn +
                 "\n\nBorrowed: " + isBorrowed;
 
     }
@@ -54,6 +50,7 @@ public class Book {
     public String getTitle() {
         return title;
     }
+
 
     /**
      * Sets the title of the object.

@@ -96,6 +96,9 @@ public class SecondaryController {
     @FXML
     private Label currentBookLabel;
 
+    @FXML 
+    private Label descriptionLabel;
+
   
 
     @FXML
@@ -133,8 +136,11 @@ private void handleSearchButtonAction(ActionEvent event) {
             if (selectedBook != null) {
                 // Set the text of currentBookLabel to the string representation of the selected book
                 currentBookLabel.setText(selectedBook.toString());
+                System.out.println(selectedBook.getDescription());
+                descriptionLabel.setText(selectedBook.getDescription());
                 // Set the currentBook variable to the selected book title
                 currentBook = selectedBook.getTitle();
+                
             }
         }
     });
