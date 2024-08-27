@@ -48,9 +48,5 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
-## Acknowledgments
-
-- Special thanks to the open-source community for providing valuable resources and tools.
-- Inspiration and guidance from JavaFX tutorials and documentation.
