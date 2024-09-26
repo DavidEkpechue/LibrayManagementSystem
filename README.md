@@ -21,9 +21,8 @@ The **Library Management System** is a basic desktop application developed using
 
 ## Technologies Used
 
-- **Java 8+**: The programming language used for development.
+- **Java**: The programming language used for development.
 - **JavaFX**: For building the user interface.
-- **SQLite** (optional): For persistent data storage. In-memory storage is used if SQLite is not configured.
 - **Maven**: For managing project dependencies and building the application.
 
 ## Usage
