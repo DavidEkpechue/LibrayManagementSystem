@@ -1,7 +1,5 @@
 # Library Management System
 
-## Overview
-
 The **Library Management System** is a basic desktop application developed using JavaFX. It enables users to manage the inventory of books, record borrowing and returning activities, and view detailed information about each book. This project demonstrates core object-oriented programming concepts and JavaFX for GUI design.
 
 ## Features
