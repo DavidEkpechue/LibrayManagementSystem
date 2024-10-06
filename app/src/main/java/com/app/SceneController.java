@@ -1,7 +1,9 @@
 package com.app;
 
 import java.io.IOException;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,9 +76,11 @@ private void addBook(ActionEvent event) {
     String language = languageField.getText();
     LocalDate publicationDate = dateField.getValue();
 
-
     // Add the new book to the collection
     bookCollection.addBook(title, genre, author, price, publicationDate, description, language);
+
+    // Save the new book to the database
+    saveBookToDatabase(title, genre, author, price, description, language, publicationDate);
 
     // Clear fields after adding book
     clearFields();
@@ -88,6 +92,35 @@ private void addBook(ActionEvent event) {
     // Pass the updated bookCollection back to the main controller
     if (mainController != null) {
         mainController.setBookCollection(bookCollection);
+    }
+}
+
+private void saveBookToDatabase(String title, String genre, String author, double price, String description, String language, LocalDate publicationDate) {
+    Database database = new Database();
+
+    String query = "INSERT INTO books (title, genre, author, price, publication_date, description, language) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    try (Connection connection = database.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+        // Set the parameters for the SQL query
+        preparedStatement.setString(1, title);
+        preparedStatement.setString(2, genre);
+        preparedStatement.setString(3, author);
+        preparedStatement.setDouble(4, price);
+        preparedStatement.setDate(5, java.sql.Date.valueOf(publicationDate));
+        preparedStatement.setString(6, description);
+        preparedStatement.setString(7, language);
+
+        // Execute the insert
+        int rowsAffected = preparedStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Book added to the database successfully!");
+        } else {
+            System.err.println("Failed to add the book to the database.");
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Error adding book to database: " + e.getMessage());
     }
 }
 

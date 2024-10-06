@@ -41,14 +41,6 @@ public class PrimaryController {
         // Initialize the book
         book = new Book(1);
         book.setTitle("Initial Book Title");
-        userList = new ArrayList<>();
-        
-        // Add some sample users to the list
-        userList.add(new User("1", "1", 1));
-        userList.add(new User("password2", "username2", 2));
-        userList.add(new User("password3", "username3", 3));
-        userList.add(new User("", "", 4));
-
     }
 
 
@@ -130,7 +122,7 @@ public class PrimaryController {
         e.printStackTrace();
         showAlert("Error", "Database error occurred.");
     } finally {
-        database.closeConnection(); // Always close the connection after use
+        database.closeConnection(); 
     }  
 }
 
