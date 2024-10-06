@@ -1,4 +1,5 @@
 module com.app {
+    requires java.sql;
     requires transitive javafx.controls;
     requires javafx.fxml;
 

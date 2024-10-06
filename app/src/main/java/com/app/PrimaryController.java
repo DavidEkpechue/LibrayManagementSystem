@@ -14,6 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -84,31 +88,51 @@ public class PrimaryController {
      */
     @FXML
     private void login(ActionEvent event) {
-        // Get entered username and password
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-    
-        // Iterate through the list of User objects
-        for (User user : userList) {
-            // Check if the entered credentials match a User object
-            if (user.getUserName().equals(username) && user.getPassword().equals(password)) {
-                // Set the user's login status to true
-                user.setLoggedIn(true);
-                // Display a success message with the username
-                showAlert("Login Successful", "Welcome, " + username + "!");
-                try {
-                    // Switch to scene 2 upon successful login
-                    switchToScene2(event, user); // Pass the logged-in user to the method
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                // Exit the method after a successful login
-                return;
+    String username = usernameField.getText();
+    String password = passwordField.getText();
+
+    // Create an instance of Database class to handle DB interactions
+    Database database = new Database();
+    Connection connection = database.getConnection();
+
+    try {
+        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setString(1, username);
+        stmt.setString(2, password);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            // If user exists, set the logged_in status in the database
+            int userId = rs.getInt("id");
+            String updateQuery = "UPDATE users SET logged_in = true WHERE id = ?";
+            PreparedStatement updateStmt = connection.prepareStatement(updateQuery);
+            updateStmt.setInt(1, userId);
+            updateStmt.executeUpdate();
+
+            showAlert("Login Successful", "Welcome, " + username + "!");
+            User user = new User(rs.getString("password"), rs.getString("username"), rs.getInt("role"));
+            user.setLoggedIn(true);
+            
+            try {
+                switchToScene2(event, user);
+            } catch (IOException e) {
+                // Handle the exception, e.g., log the error or show an error message
             }
+
+        } else {
+            // If no user is found
+            showAlert("Login Failed", "Invalid username or password.");
         }
-        // Display a failure message if no match is found
-        showAlert("Login Failed", "Invalid username or password.");
-    }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        showAlert("Error", "Database error occurred.");
+    } finally {
+        database.closeConnection(); // Always close the connection after use
+    }  
+}
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
