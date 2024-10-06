@@ -18,15 +18,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import java.time.LocalDate;
-
-
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
@@ -40,46 +36,6 @@ public class SecondaryController {
     private Scene scene;
     private Parent root;
 
-    public SecondaryController() {
-
-        // Initialize the book collection
-        bookCollection = new BookCollection("Library");
-        // Load books from the database
-        loadBooksFromDatabase();
-  
-    }
-    
-
-        // Method to load books from the database into the BookCollection
-        private void loadBooksFromDatabase() {
-            Database database = new Database();
-            String query = "SELECT * FROM books"; 
-            try (Connection connection = database.getConnection();
-                 PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
-        
-                int count = 0; // To keep track of how many books are loaded
-                while (resultSet.next()) {
-                    String title = resultSet.getString("title");
-                    String genre = resultSet.getString("genre");
-                    String author = resultSet.getString("author");
-                    double price = resultSet.getDouble("price");
-                    LocalDate publicationDate = resultSet.getDate("publication_date").toLocalDate();
-                    String description = resultSet.getString("description");
-                    String language = resultSet.getString("language");
-        
-                    // Add book to collection
-                    bookCollection.addBook(title, genre, author, price, publicationDate, description, language);
-                    count++; // Increment the count
-                }
-                System.out.println("Total books loaded: " + count); // Log the total count
-            } catch (SQLException e) {
-                System.err.println("Error loading books: " + e.getMessage());
-            }
-        }
-        
-    
-    
     @FXML
     private Label titleLabel;
 
@@ -98,9 +54,23 @@ public class SecondaryController {
     @FXML 
     private Label descriptionLabel;
 
+    private ChangeListener<String> bookSelectionListener;
+
 
     @FXML
     private TextField searchTextField;
+
+
+
+    public SecondaryController() {
+
+        // Initialize the book collection
+        bookCollection = new BookCollection("Library");
+        // Load books from the database
+        loadBooksFromDatabase();
+  
+    }
+    
 
 
 
@@ -149,57 +119,76 @@ public class SecondaryController {
     private void handleSearchButtonAction(ActionEvent event) {
         System.out.println("Search button clicked");
         String searchQuery = searchTextField.getText();
-    
+
+        // Clear the current book collection before searching
+        bookCollection.clear();
+
         // Create a list to hold the search results
         List<String> resultString = new ArrayList<>();
-    
-        // Prepare the SQL query
-        String sql = "SELECT title FROM books WHERE title LIKE ?";
-        Database database = new Database();
-    
-        try ( 
-             Connection connection = database.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-    
+
+        // Prepare the SQL query to fetch books based on the search query
+        String sql = "SELECT title, genre, author, price, publication_date, description, language FROM books WHERE title LIKE ?";
+
+        // Create an instance of the Database class to manage connections
+        Database database = new Database(); // Assuming you have a no-argument constructor
+
+        try (Connection connection = database.getConnection(); // Get connection from the Database class
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             // Set the parameter for the search query
             preparedStatement.setString(1, "%" + searchQuery + "%"); // Use wildcards for partial matches
-    
+
             // Execute the query
-            ResultSet resultSet = preparedStatement.executeQuery();
-    
-            // Iterate through the result set and add titles to the resultString
-            while (resultSet.next()) {
-                String title = resultSet.getString("title");
-                resultString.add(title);
-            }
-    
-        } catch (SQLException e) {
-            System.err.println("Error during search: " + e.getMessage());
-        }
-    
-        // Update the ListView with the search results
-        searchedListView.getItems().setAll(resultString);
-    
-        // Add listener to handle selection
-        searchedListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Find the book object corresponding to the selected title
-                Book selectedBook = bookCollection.getBookFromTitle(newValue);
-                if (selectedBook != null) {
-                    // Set the text of currentBookLabel to the string representation of the selected book
-                    currentBookLabel.setText(selectedBook.toString());
-                    System.out.println(selectedBook.getDescription());
-                    descriptionLabel.setText(selectedBook.getDescription());
-                    // Set the currentBook variable to the selected book title
-                    currentBook = selectedBook.getTitle();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // Iterate through the result set and add titles to the resultString and the BookCollection
+                while (resultSet.next()) {
+                    String title = resultSet.getString("title");
+                    String genre = resultSet.getString("genre");
+                    String author = resultSet.getString("author");
+                    double price = resultSet.getDouble("price");
+                    LocalDate publicationDate = resultSet.getDate("publication_date").toLocalDate();
+                    String description = resultSet.getString("description");
+                    String language = resultSet.getString("language");
+
+                    // Add book to collection
+                    bookCollection.addBook(title, genre, author, price, publicationDate, description, language);
+                    resultString.add(title);
                 }
             }
-        });
+
+        } catch (SQLException e) {
+            System.err.println("Error during search: " + e.getMessage());
+        } finally {
+            // Close the connection using your method
+            database.closeConnection();
+        }
+
+        // Update the ListView with the search results
+        searchedListView.getItems().setAll(resultString);
+
+        // Remove the previous listener if it exists
+        if (bookSelectionListener != null) {
+            searchedListView.getSelectionModel().selectedItemProperty().removeListener(bookSelectionListener);
+        }
+
+        // Add listener to handle selection
+        bookSelectionListener = (observable, oldValue, newValue) -> {
+            // Find the book object corresponding to the selected title
+            Book selectedBook = bookCollection.getBookFromTitle(newValue);
+            if (selectedBook != null) {
+                // Set the text of currentBookLabel to the string representation of the selected book
+                currentBookLabel.setText(selectedBook.toString());
+                System.out.println(selectedBook.getDescription());
+                descriptionLabel.setText(selectedBook.getDescription());
+                // Set the currentBook variable to the selected book title
+                currentBook = selectedBook.getTitle();
+            }
+        };
+        
+        searchedListView.getSelectionModel().selectedItemProperty().addListener(bookSelectionListener);
     }
-    
-    
-@FXML
+
+    @FXML
     private void handleAddBookButtonAction(ActionEvent event) {
     try {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddBookPopup.fxml"));
@@ -226,8 +215,8 @@ public class SecondaryController {
 
 
 
-@FXML
-private void handleBorrowBookButtonAction(ActionEvent event) throws SQLException, IOException {
+    @FXML
+    private void handleBorrowBookButtonAction(ActionEvent event) throws SQLException, IOException {
     Book selectedBook = bookCollection.getBookFromTitle(currentBook);
     if (selectedBook != null) {
         selectedBook.setBorrowed(true);
@@ -268,16 +257,42 @@ private void handleBorrowBookButtonAction(ActionEvent event) throws SQLException
     }
 
     
+    // Method to load books from the database into the BookCollection
+    private void loadBooksFromDatabase() {
+        Database database = new Database();
+        String query = "SELECT * FROM books"; 
+        try (Connection connection = database.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            int count = 0; // To keep track of how many books are loaded
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                String genre = resultSet.getString("genre");
+                String author = resultSet.getString("author");
+                double price = resultSet.getDouble("price");
+                LocalDate publicationDate = resultSet.getDate("publication_date").toLocalDate();
+                String description = resultSet.getString("description");
+                String language = resultSet.getString("language");
+
+                // Add book to collection
+                bookCollection.addBook(title, genre, author, price, publicationDate, description, language);
+                count++; // Increment the count
+            }
+            System.out.println("Total books loaded: " + count); // Log the total count
+        } catch (SQLException e) {
+            System.err.println("Error loading books: " + e.getMessage());
+        }
+    }
 
 
+    public void currentUser(User user) {
+        this.currentUser = user;
+    }
 
-public void currentUser(User user) {
-    this.currentUser = user;
-}
 
-
-public void setBookCollection(BookCollection bookCollection) {
-    this.bookCollection = bookCollection;
-}
+    public void setBookCollection(BookCollection bookCollection) {
+        this.bookCollection = bookCollection;
+    }
 
 }
